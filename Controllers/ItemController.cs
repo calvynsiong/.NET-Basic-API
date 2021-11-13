@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NetApi2.DTO;
 using NetApi2.Entities;
 using NetApi2.Repositories;
 namespace NetApi2.Controllers
@@ -15,19 +16,34 @@ namespace NetApi2.Controllers
         }
         //Get Request
         [HttpGet]
-        public IEnumerable<Item> GetItems()
+        public IEnumerable<ItemDto> GetItems()
         {
-            var items = repository.GetItems();
-            Console.WriteLine(items);
+            var items = repository.GetItems().Select(item => item.AsDto());
             return items;
         }
         //Get Request
         [HttpGet("{id}")]
-        public ActionResult<Item> GetItem(Guid id)
+        public ActionResult<ItemDto> GetItem(Guid id)
         {
             var item = repository.GetItem(id);
             if (item is null) return NotFound("Item not found");
-            return item;
+            return item.AsDto();
         }
+        //Post Request
+        [HttpPost]
+        public ActionResult<ItemDto> CreateItem(CreateItemDto newItem)
+        {
+            Item item = new()
+            {
+                Id = Guid.NewGuid(),
+                Name = newItem.Name,
+                Price = newItem.Price,
+                CreatedDate = DateTimeOffset.UtcNow,
+            };
+            repository.CreateItem(item);
+            return CreatedAtAction(nameof(GetItem), new { id = item.Id }, item.AsDto());
+        }
+
+
     }
 }

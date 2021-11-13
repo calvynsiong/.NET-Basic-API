@@ -21,5 +21,10 @@ namespace NetApi2.Repositories
             return items.Where(item => item.Id == id).SingleOrDefault();
         }
 
+        public void CreateItem(Item newItem)
+        {
+            items.Add(newItem);
+        }
+
     }
 }
