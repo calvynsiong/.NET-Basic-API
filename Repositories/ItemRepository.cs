@@ -25,6 +25,11 @@ namespace NetApi2.Repositories
         {
             items.Add(newItem);
         }
+        public void UpdateItem(Item newItem)
+        {
+            int index = items.FindIndex(existingItem => newItem.Id == existingItem.Id);
+            items[index] = newItem;
+        }
 
     }
 }

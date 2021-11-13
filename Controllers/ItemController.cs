@@ -43,6 +43,18 @@ namespace NetApi2.Controllers
             repository.CreateItem(item);
             return CreatedAtAction(nameof(GetItem), new { id = item.Id }, item.AsDto());
         }
+        //Put Request
+        [HttpPut("{id}")]
+        public ActionResult UpdateItem(Guid id, UpdateItemDto newItem)
+        {
+
+            var existingItem = repository.GetItem(id);
+            if (existingItem is null) { return NotFound(); }
+            existingItem.Name = newItem.Name;
+            existingItem.Price = newItem.Price;
+            repository.UpdateItem(existingItem);
+            return NoContent();
+        }
 
 
     }
