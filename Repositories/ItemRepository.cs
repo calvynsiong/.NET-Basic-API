@@ -30,6 +30,11 @@ namespace NetApi2.Repositories
             int index = items.FindIndex(existingItem => newItem.Id == existingItem.Id);
             items[index] = newItem;
         }
+        public void DeleteItem(Item item)
+        {
+            int index = items.FindIndex(existingItem => item.Id == existingItem.Id);
+            items.RemoveAt(index);
+        }
 
     }
 }

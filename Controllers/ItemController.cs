@@ -55,6 +55,17 @@ namespace NetApi2.Controllers
             repository.UpdateItem(existingItem);
             return NoContent();
         }
+        //Delete Request
+        [HttpDelete("{id}")]
+        public ActionResult DeleteItem(Guid id)
+        {
+
+            var existingItem = repository.GetItem(id);
+            if (existingItem is null) return NotFound();
+            repository.DeleteItem(existingItem);
+            return NoContent();
+
+        }
 
 
     }
